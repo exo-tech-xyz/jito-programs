@@ -37,6 +37,19 @@ pub const TIP_ACCOUNT_SEED_7: &[u8] = b"TIP_ACCOUNT_7";
 
 pub const HEADER: usize = 8;
 
+#[cfg(feature = "no-entrypoint")]
+pub mod types {
+    use super::*;
+    
+    // Re-export the types and constants you need
+    pub use super::{
+        Config, TipPaymentAccount, InitBumps,
+        CONFIG_ACCOUNT_SEED, TIP_ACCOUNT_SEED_0, TIP_ACCOUNT_SEED_1,
+        TIP_ACCOUNT_SEED_2, TIP_ACCOUNT_SEED_3, TIP_ACCOUNT_SEED_4,
+        TIP_ACCOUNT_SEED_5, TIP_ACCOUNT_SEED_6, TIP_ACCOUNT_SEED_7,
+    };
+}
+
 #[cfg(not(feature = "no-entrypoint"))]
 #[program]
 pub mod jito_tip_payment {

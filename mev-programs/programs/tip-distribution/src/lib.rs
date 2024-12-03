@@ -1,5 +1,4 @@
 pub use anchor_lang::prelude::*;
-pub use crate::program::*;  // This exposes the generated Instructions and Accounts
 #[cfg(not(feature = "no-entrypoint"))]
 use {default_env::default_env, solana_security_txt::security_txt};
 
@@ -27,6 +26,17 @@ pub mod sdk;
 pub mod state;
 
 declare_id!("4R3gSG8BpU4t19KYj8CfnbtRpnT8gtk4dvTHxVRwc2r7");
+
+#[cfg(feature = "no-entrypoint")]
+pub mod types {
+    use super::*;
+    
+    // Re-export the types and constants you need
+    pub use crate::state::{Config, TipDistributionAccount, ClaimStatus, MerkleRoot};
+    pub use crate::sdk;
+    pub use crate::merkle_proof;
+}
+
 
 #[cfg(not(feature = "no-entrypoint"))]
 #[program]
