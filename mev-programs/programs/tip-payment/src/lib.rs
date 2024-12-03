@@ -40,14 +40,95 @@ pub const HEADER: usize = 8;
 #[cfg(feature = "no-entrypoint")]
 pub mod types {
     use super::*;
+    use anchor_lang::{InstructionData, ToAccountMetas};
     
-    // Re-export the types and constants you need
+    // Existing exports
     pub use super::{
         Config, TipPaymentAccount, InitBumps,
         CONFIG_ACCOUNT_SEED, TIP_ACCOUNT_SEED_0, TIP_ACCOUNT_SEED_1,
         TIP_ACCOUNT_SEED_2, TIP_ACCOUNT_SEED_3, TIP_ACCOUNT_SEED_4,
         TIP_ACCOUNT_SEED_5, TIP_ACCOUNT_SEED_6, TIP_ACCOUNT_SEED_7,
     };
+
+    // Instruction data structs
+    #[derive(InstructionData)]
+    pub struct Initialize {
+        pub bumps: InitBumps,
+    }
+
+    #[derive(InstructionData)]
+    pub struct ClaimTips {}
+
+    #[derive(InstructionData)]
+    pub struct ChangeTipReceiver {}
+
+    #[derive(InstructionData)]
+    pub struct ChangeBlockBuilder {
+        pub block_builder_commission: u64,
+    }
+
+    // Account structs
+    #[derive(ToAccountMetas)]
+    pub struct InitializeAccounts {
+        pub config: Pubkey,
+        pub payer: Pubkey,
+        pub system_program: Pubkey,
+        pub tip_payment_account_0: Pubkey,
+        pub tip_payment_account_1: Pubkey,
+        pub tip_payment_account_2: Pubkey,
+        pub tip_payment_account_3: Pubkey,
+        pub tip_payment_account_4: Pubkey,
+        pub tip_payment_account_5: Pubkey,
+        pub tip_payment_account_6: Pubkey,
+        pub tip_payment_account_7: Pubkey,
+    }
+
+    #[derive(ToAccountMetas)]
+    pub struct ClaimTipsAccounts {
+        pub config: Pubkey,
+        pub tip_receiver: Pubkey,
+        pub block_builder: Pubkey,
+        pub tip_payment_account_0: Pubkey,
+        pub tip_payment_account_1: Pubkey,
+        pub tip_payment_account_2: Pubkey,
+        pub tip_payment_account_3: Pubkey,
+        pub tip_payment_account_4: Pubkey,
+        pub tip_payment_account_5: Pubkey,
+        pub tip_payment_account_6: Pubkey,
+        pub tip_payment_account_7: Pubkey,
+    }
+
+    #[derive(ToAccountMetas)]
+    pub struct ChangeTipReceiverAccounts {
+        pub config: Pubkey,
+        pub old_tip_receiver: Pubkey,
+        pub new_tip_receiver: Pubkey,
+        pub block_builder: Pubkey,
+        pub tip_payment_account_0: Pubkey,
+        pub tip_payment_account_1: Pubkey,
+        pub tip_payment_account_2: Pubkey,
+        pub tip_payment_account_3: Pubkey,
+        pub tip_payment_account_4: Pubkey,
+        pub tip_payment_account_5: Pubkey,
+        pub tip_payment_account_6: Pubkey,
+        pub tip_payment_account_7: Pubkey,
+    }
+
+    #[derive(ToAccountMetas)]
+    pub struct ChangeBlockBuilderAccounts {
+        pub config: Pubkey,
+        pub tip_receiver: Pubkey,
+        pub old_block_builder: Pubkey,
+        pub new_block_builder: Pubkey,
+        pub tip_payment_account_0: Pubkey,
+        pub tip_payment_account_1: Pubkey,
+        pub tip_payment_account_2: Pubkey,
+        pub tip_payment_account_3: Pubkey,
+        pub tip_payment_account_4: Pubkey,
+        pub tip_payment_account_5: Pubkey,
+        pub tip_payment_account_6: Pubkey,
+        pub tip_payment_account_7: Pubkey,
+    }
 }
 
 #[cfg(not(feature = "no-entrypoint"))]

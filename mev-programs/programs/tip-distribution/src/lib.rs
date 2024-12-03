@@ -30,13 +30,112 @@ declare_id!("4R3gSG8BpU4t19KYj8CfnbtRpnT8gtk4dvTHxVRwc2r7");
 #[cfg(feature = "no-entrypoint")]
 pub mod types {
     use super::*;
+    use anchor_lang::{InstructionData, ToAccountMetas, solana_program::instruction::AccountMeta};
     
-    // Re-export the types and constants you need
+    // Existing exports
     pub use crate::state::{Config, TipDistributionAccount, ClaimStatus, MerkleRoot};
     pub use crate::sdk;
     pub use crate::merkle_proof;
-}
 
+    // Instruction data structs
+    #[derive(InstructionData)]
+    pub struct Initialize {
+        pub authority: Pubkey,
+        pub expired_funds_account: Pubkey,
+        pub num_epochs_valid: u64,
+        pub max_validator_commission_bps: u16,
+        pub bump: u8,
+    }
+
+    #[derive(InstructionData)]
+    pub struct InitializeTipDistributionAccount {
+        pub merkle_root_upload_authority: Pubkey,
+        pub validator_commission_bps: u16,
+        pub bump: u8,
+    }
+
+    #[derive(InstructionData)]
+    pub struct CloseClaimStatus {}
+
+    #[derive(InstructionData)]
+    pub struct UpdateConfig {
+        pub new_config: Config,
+    }
+
+    #[derive(InstructionData)]
+    pub struct UploadMerkleRoot {
+        pub root: [u8; 32],
+        pub max_total_claim: u64,
+        pub max_num_nodes: u64,
+    }
+
+    #[derive(InstructionData)]
+    pub struct CloseTipDistributionAccount {
+        pub _epoch: u64,
+    }
+
+    #[derive(InstructionData)]
+    pub struct Claim {
+        pub bump: u8,
+        pub amount: u64,
+        pub proof: Vec<[u8; 32]>,
+    }
+
+    // Account structs
+    #[derive(ToAccountMetas)]
+    pub struct InitializeAccounts {
+        pub config: Pubkey,
+        pub system_program: Pubkey,
+        pub initializer: Pubkey,
+    }
+
+    #[derive(ToAccountMetas)]
+    pub struct InitializeTipDistributionAccountAccounts {
+        pub config: Pubkey,
+        pub tip_distribution_account: Pubkey,
+        pub system_program: Pubkey,
+        pub validator_vote_account: Pubkey,
+        pub signer: Pubkey,
+    }
+
+    #[derive(ToAccountMetas)]
+    pub struct CloseClaimStatusAccounts {
+        pub config: Pubkey,
+        pub claim_status: Pubkey,
+        pub claim_status_payer: Pubkey,
+    }
+
+    #[derive(ToAccountMetas)]
+    pub struct UpdateConfigAccounts {
+        pub config: Pubkey,
+        pub authority: Pubkey,
+    }
+
+    #[derive(ToAccountMetas)]
+    pub struct UploadMerkleRootAccounts {
+        pub config: Pubkey,
+        pub tip_distribution_account: Pubkey,
+        pub merkle_root_upload_authority: Pubkey,
+    }
+
+    #[derive(ToAccountMetas)]
+    pub struct CloseTipDistributionAccountAccounts {
+        pub config: Pubkey,
+        pub tip_distribution_account: Pubkey,
+        pub validator_vote_account: Pubkey,
+        pub expired_funds_account: Pubkey,
+        pub signer: Pubkey,
+    }
+
+    #[derive(ToAccountMetas)]
+    pub struct ClaimAccounts {
+        pub config: Pubkey,
+        pub tip_distribution_account: Pubkey,
+        pub claim_status: Pubkey,
+        pub claimant: Pubkey,
+        pub system_program: Pubkey,
+    }
+}
 
 #[cfg(not(feature = "no-entrypoint"))]
 #[program]
