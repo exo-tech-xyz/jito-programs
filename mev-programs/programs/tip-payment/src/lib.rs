@@ -1,5 +1,4 @@
 pub use anchor_lang::prelude::*;
-pub use crate::program::*;  // This exposes the generated Instructions and Accounts
 #[cfg(not(feature = "no-entrypoint"))]
 use {default_env::default_env, solana_security_txt::security_txt};
 
