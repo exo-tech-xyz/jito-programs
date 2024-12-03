@@ -37,6 +37,7 @@ pub const TIP_ACCOUNT_SEED_7: &[u8] = b"TIP_ACCOUNT_7";
 
 pub const HEADER: usize = 8;
 
+#[cfg(not(feature = "no-entrypoint"))]
 #[program]
 pub mod jito_tip_payment {
     use super::*;

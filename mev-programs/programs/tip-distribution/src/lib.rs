@@ -28,6 +28,7 @@ pub mod state;
 
 declare_id!("4R3gSG8BpU4t19KYj8CfnbtRpnT8gtk4dvTHxVRwc2r7");
 
+#[cfg(not(feature = "no-entrypoint"))]
 #[program]
 pub mod jito_tip_distribution {
     use jito_programs_vote_state::VoteState;
