@@ -917,7 +917,10 @@ describe("tests tip_distribution", () => {
       bump,
     } = await setup_initTipDistributionAccount();
 
-    // TODO:
+    // TODO: call the init instruction
+    // TODO: Valdiate that the MerkleRootUploadConfig account was created
+    // TODO: Validate the MerkleRootUploadConfig authority is the Config authority
+    
   });
 });
 
