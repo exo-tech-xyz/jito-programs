@@ -1,10 +1,9 @@
 use anchor_lang::{prelude::*, solana_program::clock::Clock};
 #[cfg(not(feature = "no-entrypoint"))]
 use solana_security_txt::security_txt;
-use state::MerkleRootUploadConfig;
 
 use crate::{
-    state::{ClaimStatus, Config, MerkleRoot, TipDistributionAccount},
+    state::{ClaimStatus, Config, MerkleRoot, MerkleRootUploadConfig, TipDistributionAccount},
     ErrorCode::Unauthorized,
 };
 
@@ -284,7 +283,10 @@ pub mod jito_tip_distribution {
         Ok(())
     }
 
-    pub fn initialize_merkle_root_upload_config(ctx: Context<InitializeMerkleRootUploadConfig>, authority: Pubkey) -> Result<()> {
+    pub fn initialize_merkle_root_upload_config(
+        ctx: Context<InitializeMerkleRootUploadConfig>,
+        authority: Pubkey,
+    ) -> Result<()> {
         // TODO: Call the authorize function
 
         // TODO: Set the bump and override authority
